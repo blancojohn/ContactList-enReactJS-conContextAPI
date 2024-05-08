@@ -1,16 +1,16 @@
 import React from 'react';
 import injectContext from './store/AppContext';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
+import Contact from './pages/Contact';
 
 const App = () => {
     return (
         <>
-            <BrowserRouter>
-                <Routes>
-                    <Route path='/' element={<Home />} />
-                </Routes>
-            </BrowserRouter>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path='/' element={<Contact />} />
+                    </Routes>
+                </BrowserRouter>
         </>
     )
 }
