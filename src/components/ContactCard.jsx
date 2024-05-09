@@ -20,10 +20,10 @@ const ContactCard = () => {
                         return (
                             <div key={contact.id} className="card mb-3">
                                 <div className="row g-0">
-                                    <div className="col-md-4">
-                                        <img className="img-fluid rounded-start"></img>
+                                    <div className="col-md-2">
+                                        <img src="https://picsum.photos/id/129/200/200" className="img-fluid rounded-start"></img>
                                     </div>
-                                    <div className="col-md-7">
+                                    <div className="col-md-9">
                                         <div className="card-body">
                                             <h5 className="card-title">{contact.full_name}</h5>
                                             <p className="card-text"><IoLocation/>{contact.adreess}</p>

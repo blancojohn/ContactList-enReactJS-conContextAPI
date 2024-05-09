@@ -1,3 +1,5 @@
+import { json } from "react-router-dom"
+
 /**
  *  getStore: () => {}, //funcion que devuelve el objeto store con cada uno de los atributos alli definidos, 
  *  getActions: () => {}, //funcion que devuelve el objeto actions con cada una de las funciones alli definidas,
@@ -13,14 +15,55 @@ const getStore = (/* { getStore, getActions, setStore } */) => {
                     adreess: 'Concepción',
                     phone: '+56 9 463 499 821',
                     email: 'john@gmail.com',
-                    agenda_slug: 'The Soprano'
+                    agenda_slug: 'TheSoprano',
+                    host: 'https://playground.4geeks.com'
                 }
             ],
             currentContact: null,
         },
 
-        actions: {}
+        actions: {
+            createAgenda: async (name)=>{
+                try{
+                    const raw= JSON.stringify(name)
+                    const apiUrl= 'https://playground.4geeks.com/contact/agendas/TheSoprano'
+                    const options={
+                        method: 'POST',
+                        body: raw,
+                        headers: {
+                            "Content-Type": "Application/json"
+                        }
+                    }
+                    const response= await fetch(apiUrl, options)
+                    const data= await response.json()
+                    if(data.detail){
+                        console.log(data.detail)
+                    }
+                    return data
+                }catch(detail){
+                    
+                }
+            },
+
+            getAgendaContacts: async ()=>{
+                try{
+                    const apiUrl= 'https://playground.4geeks.com/contact/agendas/TheSoprano/contacts'
+                    const response= await fetch(apiUrl)
+                    console.log(response.status)
+                    const data= await response.json()
+                    if(data){
+                        console.log(data.contacts)
+                        return data
+                    }else{
+
+                    }
+                }catch(detail){
+                    console.log(detail)
+                }
+            }
+        }
     }
 }
 
 export default getStore
+
