@@ -5,11 +5,11 @@ import { json } from "react-router-dom"
  *  getActions: () => {}, //funcion que devuelve el objeto actions con cada una de las funciones alli definidas,
  *  setStore: () => {} // funcion que recibe como argumento un objeto con cada uno de los atributos que se desea actulizar o asignar un valor 
  */
-const getStore = (/* { getStore, getActions, setStore } */) => {
+const getStore = ({ getStore, getActions, setStore }) => {
     return {
         store: { /* contiene propiedades contacts y currentcontacts. No estoy seguro de necesitar currentContact */
             contacts: [/* es un array de objetos porque cada contacto  contiene distinta info*/
-                {   
+                {
                     id: 1,
                     full_name: 'Tony Soprano',
                     adreess: 'Concepción',
@@ -18,47 +18,47 @@ const getStore = (/* { getStore, getActions, setStore } */) => {
                     agenda_slug: 'TheSoprano',
                     host: 'https://playground.4geeks.com'
                 }
-            ],
-            currentContact: null,
+            ]
         },
 
         actions: {
-            createAgenda: async (name)=>{
-                try{
-                    const raw= JSON.stringify(name)
-                    const apiUrl= 'https://playground.4geeks.com/contact/agendas/TheSoprano'
-                    const options={
+            createAgenda: async (name) => {
+                try {
+                    const { contacts: [{ host }] } = getStore();
+                    const raw = JSON.stringify(name)
+                    const apiUrl = `${host}/contact/agendas/TheSoprano`
+                    const options = {
                         method: 'POST',
                         body: raw,
                         headers: {
                             "Content-Type": "Application/json"
                         }
                     }
-                    const response= await fetch(apiUrl, options)
-                    const data= await response.json()
-                    if(data.detail){
+                    const response = await fetch(apiUrl, options)
+                    const data = await response.json()
+                    if (data.detail) {/* Si la respuesta no es en el orden de los 200, accede a la propiedad detail para ver el mensaje de la API */
                         console.log(data.detail)
+                    } else {
+                        return data
                     }
-                    return data
-                }catch(detail){
-                    
+                } catch (error) {
+
                 }
             },
 
-            getAgendaContacts: async ()=>{
-                try{
-                    const apiUrl= 'https://playground.4geeks.com/contact/agendas/TheSoprano/contacts'
-                    const response= await fetch(apiUrl)
+            getAgendaContacts: async () => {
+                try {
+                    /* Destructuración anidada de la propiedad contacts del store porque tiene 
+                       un array de objetos como valor para utilizar el host concatenando. */
+                    const { contacts: [{ host }] } = getStore();
+                    const apiUrl = `${host}/contact/agendas/TheSoprano`
+                    const response = await fetch(apiUrl)
                     console.log(response.status)
-                    const data= await response.json()
-                    if(data){
-                        console.log(data.contacts)
-                        return data
-                    }else{
+                    const data = await response.json()
+                    console.log(data.contacts)
+                    return setStore({contacts: data})
+                } catch (error) {
 
-                    }
-                }catch(detail){
-                    console.log(detail)
                 }
             }
         }
@@ -66,4 +66,7 @@ const getStore = (/* { getStore, getActions, setStore } */) => {
 }
 
 export default getStore
+
+
+
 

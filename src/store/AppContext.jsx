@@ -24,7 +24,7 @@ const injectContext = PassedComponent => {
         }))
 
         useEffect(() => {
-            state.actions.createAgenda()
+            state.actions.createAgenda()/* Por si acaso borran las agendas de la API  */
             state.actions.getAgendaContacts()
             // aqui pueden ejecutar aquellas funciones que deseen ejecutar 
             // al momento de cargar la pagina web por primera vez
