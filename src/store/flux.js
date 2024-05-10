@@ -12,7 +12,7 @@ const getStore = ({ getStore, getActions, setStore }) => {
                 {
                     id: 1,
                     full_name: 'Tony Soprano',
-                    adreess: 'Concepción',
+                    address: 'Concepción',
                     phone: '+56 9 463 499 821',
                     email: 'john@gmail.com',
                     agenda_slug: 'TheSoprano',
@@ -22,6 +22,10 @@ const getStore = ({ getStore, getActions, setStore }) => {
         },
 
         actions: {
+            handleSubmitAdd: async (e)=>{
+                e.preventDefault()
+            },
+
             createAgenda: async (name) => {
                 try {
                     const { contacts: [{ host }] } = getStore();
@@ -56,7 +60,7 @@ const getStore = ({ getStore, getActions, setStore }) => {
                     console.log(response.status)
                     const data = await response.json()
                     console.log(data.contacts)
-                    return setStore({contacts: data})
+                    return setStore({contacts: data})/* actualiza el store en la propiedad contact */
                 } catch (error) {
 
                 }
