@@ -25,7 +25,7 @@ const ContactCard = () => {
                                     </div>
                                     <div className="col-md-9">
                                         <div className="card-body">
-                                            <h5 className="card-title">{contact.full_name}</h5>
+                                            <h5 className="card-title">{contact.name}</h5>
                                             <p className="card-text"><IoLocation/>{contact.address}</p>
                                             <p className="card-text"><IoPhonePortrait/>{contact.phone}</p>
                                             <p className="card-text"><IoMail/>{contact.email}</p>

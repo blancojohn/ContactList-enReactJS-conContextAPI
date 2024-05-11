@@ -9,26 +9,54 @@ const getStore = ({ getStore, getActions, setStore }) => {
     return {
         store: { /* contiene propiedades contacts y currentcontacts. No estoy seguro de necesitar currentContact */
             contacts: [/* es un array de objetos porque cada contacto  contiene distinta info*/
-                {
+                {   
                     id: 1,
-                    full_name: 'Tony Soprano',
-                    address: 'Concepción',
-                    phone: '+56 9 463 499 821',
-                    email: 'john@gmail.com',
-                    agenda_slug: 'TheSoprano',
-                    host: 'https://playground.4geeks.com'
+                    name: '',
+                    address: '',
+                    phone: '',
+                    email: '',
+                    slug: ''
                 }
-            ]
+            ],
+            host: 'https://playground.4geeks.com'
+
         },
 
         actions: {
-            handleSubmitAdd: async (e)=>{
+            AddContact: async (e, contacts)=>{
                 e.preventDefault()
+                try{
+                    const { host }= getStore();
+                    const raw= JSON.stringify(contacts)
+                    const apiUrl= `${host}/contact/agendas/TheSoprano/contacts`
+                    const options= {
+                        method: 'POST',
+                        body: raw,
+                        headers: {
+                            "Content-Type": "Application/json"
+                        }
+                    }
+                    const response= await fetch(apiUrl, options)
+                    console.log(response)
+                    const data= await response.json
+                    console.log(data)
+                }catch(error){
+
+                }
             },
+
+          /*  changeAddContact: (e)=>{
+                const { contacts }= getStore();
+                console.log(contacts)
+                const {name, value}= e.target
+                console.log(name)
+                contacts[name]= value
+                setStore({contacts: contacts})
+            },  */
 
             createAgenda: async (name) => {
                 try {
-                    const { contacts: [{ host }] } = getStore();
+                    const { host } = getStore();
                     const raw = JSON.stringify(name)
                     const apiUrl = `${host}/contact/agendas/TheSoprano`
                     const options = {
@@ -52,15 +80,13 @@ const getStore = ({ getStore, getActions, setStore }) => {
 
             getAgendaContacts: async () => {
                 try {
-                    /* Destructuración anidada de la propiedad contacts del store porque tiene 
-                       un array de objetos como valor para utilizar el host concatenando. */
-                    const { contacts: [{ host }] } = getStore();
+                    const { host } = getStore();
                     const apiUrl = `${host}/contact/agendas/TheSoprano`
                     const response = await fetch(apiUrl)
                     console.log(response.status)
                     const data = await response.json()
-                    console.log(data.contacts)
-                    return setStore({contacts: data})/* actualiza el store en la propiedad contact */
+                    console.log(data.contacts)/* Obtiene los contactos de la propiedad contatc de la API */
+                    return setStore({contacts: data.contacts})/* actualiza el store en la propiedad contacts con los datos de la proiedad contacts de la API*/
                 } catch (error) {
 
                 }
