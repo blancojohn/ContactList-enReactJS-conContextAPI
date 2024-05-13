@@ -1,4 +1,5 @@
 import { json } from "react-router-dom"
+import AddContact from "../pages/Add.Contact";
 
 /**
  *  getStore: () => {}, //funcion que devuelve el objeto store con cada uno de los atributos alli definidos, 
@@ -7,27 +8,26 @@ import { json } from "react-router-dom"
  */
 const getStore = ({ getStore, getActions, setStore }) => {
     return {
-        store: { /* contiene propiedades contacts y currentcontacts. No estoy seguro de necesitar currentContact */
+        store: { /* contiene propiedades contacts */
             contacts: [/* es un array de objetos porque cada contacto  contiene distinta info*/
-                {   
-                    id: 1,
-                    name: '',
-                    address: '',
-                    phone: '',
-                    email: '',
-                    slug: ''
-                }
+                
             ],
+            contact: { /* este obejeto es el que voy a guardar en memoria y se envía en el body de la solicitud*/  
+                name: '',
+                address: '',
+                phone: '',
+                email: '',
+            },
+            
             host: 'https://playground.4geeks.com'
 
         },
 
         actions: {
-            AddContact: async (e, contacts)=>{
-                e.preventDefault()
+            addContact: async ()=>{
                 try{
-                    const { host }= getStore();
-                    const raw= JSON.stringify(contacts)
+                    const { host, contact }= getStore();
+                    const raw= JSON.stringify(contact)
                     const apiUrl= `${host}/contact/agendas/TheSoprano/contacts`
                     const options= {
                         method: 'POST',
@@ -43,16 +43,17 @@ const getStore = ({ getStore, getActions, setStore }) => {
                 }catch(error){
 
                 }
+                getActions().getAgendaContacts()
             },
 
-          /*  changeAddContact: (e)=>{
-                const { contacts }= getStore();
-                console.log(contacts)
-                const {name, value}= e.target
-                console.log(name)
-                contacts[name]= value
-                setStore({contacts: contacts})
-            },  */
+          changeAddContact: (e)=>{
+                const { contact }= getStore();
+                console.log('Tipo de datos', contact)
+                const {name, value }= e.target
+                console.log('Propiedad',/*, phone, address */)
+                contact[ name/*email /* phone, address */]= value
+                setStore({contact: contact})
+            },  
 
             createAgenda: async (name) => {
                 try {
