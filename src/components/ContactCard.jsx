@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { Context } from "../store/AppContext";
 import { IoLocation, IoPhonePortrait, IoMail, IoTrash } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
@@ -26,16 +27,18 @@ const ContactCard = () => {
                                     <div className="col-md-9">
                                         <div className="card-body">
                                             <h5 className="card-title">{contact.name}</h5>
-                                            <p className="card-text"><IoLocation/>{contact.address}</p>
-                                            <p className="card-text"><IoPhonePortrait/>{contact.phone}</p>
-                                            <p className="card-text"><IoMail/>{contact.email}</p>
+                                            <p className="card-text"><IoLocation />{contact.address}</p>
+                                            <p className="card-text"><IoPhonePortrait />{contact.phone}</p>
+                                            <p className="card-text"><IoMail />{contact.email}</p>
                                         </div>
                                     </div>
-                                    <div className="col-md-1">
-                                        <div className="card-body">
-                                            <MdEdit/>
-                                            <IoTrash/>
-                                        </div>
+                                    <div className="container d-inline col-md-1">
+                                        <Link to={'/addcontact'} onClick={actions.updateContact} type="button" className="btn btn-light">
+                                            <MdEdit />
+                                        </Link>
+                                        <button type="button" className="btn btn-light">
+                                            <IoTrash />
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -49,3 +52,4 @@ const ContactCard = () => {
 }
 
 export default ContactCard
+                                                   
