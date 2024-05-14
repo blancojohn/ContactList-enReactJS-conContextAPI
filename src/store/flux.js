@@ -1,5 +1,3 @@
-import { json } from "react-router-dom"
-import AddContact from "../pages/Add.Contact";
 
 /**
  *  getStore: () => {}, //funcion que devuelve el objeto store con cada uno de los atributos alli definidos, 
@@ -24,6 +22,14 @@ const getStore = ({ getStore, getActions, setStore }) => {
         },
 
         actions: {
+            checkInputsComplets: async ()=>{/* valida que los inputs estén con info */
+                const { contact }= getStore();
+                if( contact.name !== '' && contact.phone !== '' && contact.address !== '' && contact.email !== ''){
+                    alert('Agregado')
+                    getActions().addContact()
+                }else{ alert('Completar campos')}
+            },
+
             addContact: async ()=>{
                 try{
                     const { host, contact }= getStore();
@@ -40,18 +46,24 @@ const getStore = ({ getStore, getActions, setStore }) => {
                     console.log(response)
                     const data= await response.json
                     console.log(data)
+                    setStore({contact:{
+                        name: '',
+                        phone: '',
+                        address: '',
+                        email: ''
+                    }})
                 }catch(error){
 
                 }
                 getActions().getAgendaContacts()
+            
             },
 
           changeAddContact: (e)=>{
                 const { contact }= getStore();
                 console.log('Tipo de datos', contact)
                 const {name, value }= e.target
-                console.log('Propiedad',/*, phone, address */)
-                contact[ name/*email /* phone, address */]= value
+                contact[ name ]= value
                 setStore({contact: contact})
             },  
 

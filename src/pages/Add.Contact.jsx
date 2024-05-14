@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { Context } from "../store/AppContext";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 
 const Form= ()=>{
     const { store, actions }= useContext(Context)
-
+    const navigate= useNavigate()
     return(
         <>  
             <div className="container d-flex justify-content-center">
@@ -28,7 +28,7 @@ const Form= ()=>{
                     <label htmlFor="address" className="form-label">Address:</label>
                     <input className="form-control w-100" type="text" name="address" id="address" placeholder="Address" value={store.contact.address} onChange={actions.changeAddContact}></input>
                 </div>
-                <button onClick={actions.addContact} type="button" className="btn btn-primary w-100">Save</button>
+                <button onClick={()=>{if(actions.checkInputsComplets()) navigate('/')}} className="btn btn-primary w-100" type="button">Save</button>
                 <Link to='/' className="container d-flex justify-content-center">or get back to contacts</Link>
             </form>
         </>
