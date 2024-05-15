@@ -33,7 +33,7 @@ const ContactCard = () => {
                                         </div>
                                     </div>
                                     <div className="container d-inline col-md-1">
-                                        <Link to={'/addcontact'} onClick={actions.updateContact} type="button" className="btn btn-light">
+                                        <Link onClick={actions.handleClickUpdate} to={'/addcontact'} type="button" className="btn btn-light">
                                             <MdEdit />
                                         </Link>
                                         <button type="button" className="btn btn-light">

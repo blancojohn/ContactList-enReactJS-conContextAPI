@@ -5,7 +5,7 @@ import { Context } from "../store/AppContext";
 
 
 const Contact = () => {
-    const { store, actions }= useContext(Context)
+    const { actions }= useContext(Context)
 
     return(
         <>
@@ -13,7 +13,7 @@ const Contact = () => {
                 <h2>CONTACT LIST</h2>
             </div>
             <div className='contauner d-flex justify-content-end'>
-                <Link onClick={()=>{store.type_peticion}} className="btn btn-success" to="/addcontact">
+                <Link onClick={actions.handleClickAdd} className="btn btn-success" to="/addcontact">
                     Add New Contact
                 </Link>
             </div>
