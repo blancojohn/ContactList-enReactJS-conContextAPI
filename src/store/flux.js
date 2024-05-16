@@ -27,19 +27,30 @@ const getStore = ({ getStore, getActions, setStore }) => {
         },
 
         actions: {
-            handleClickAdd: async () => {
+            handleClickAdd: ()=>{
                 setStore({ buttonAdd: true })
             },
 
-            handleClickUpdate: async () => {
+            handleClickUpdate: ()=>{
                 setStore({ buttonUpdate: true })
             },
 
-            handleClickBack: async () => {
+            handleClickBack: ()=>{
                 setStore({
                     buttonAdd: false,
-                    buttonUpdate: false
+                    buttonUpdate: false,
                 })
+            },
+
+            getInfoContact: (index) => {
+                /* Muestra la info de un solo contacto dentro un formulario para poder editarla.
+                   Está función es utilizada en el componente ContactCard de cada conatcto. De tal 
+                   manera, permite que cada contacto pueda ser actualizado. Esta Función se ejecuta al presionar 
+                   <boton de editar onClick={()=>getInfoContact(index)}>, pasando como argumento el index generado por
+                   el map de este componente. Se necesita el index para actualizar info */
+                const { contacts }= getStore();
+                let contact= contacts[index]/* esta variable no es la misma que se encuentra dentro del store */
+                setStore({ contact })
             },
 
             checkInputsComplets: async () => {
@@ -69,14 +80,7 @@ const getStore = ({ getStore, getActions, setStore }) => {
                     console.log(response)
                     const data = await response.json()
                     console.log(data)
-                    setStore({
-                        contact: {
-                            name: '',
-                            phone: '',
-                            address: '',
-                            email: ''
-                        }
-                    })
+                    getActions().cleanContact()
                 } catch (error) {
 
                 }
@@ -92,11 +96,11 @@ const getStore = ({ getStore, getActions, setStore }) => {
                 setStore({ contact: contact })
             },
 
-            updateContact: async (contact_id) => {
+            updateContact: async () => {
                 try {
-                    const { host, contact } = getStore();
+                    const { host, contact, contacts:[{id}]} = getStore();
                     const raw = JSON.stringify(contact)
-                    const apiUrl = `${host}/contact/agendas/TheSoprano/contacts/${contact_id}`
+                    const apiUrl = `${host}/contact/agendas/TheSoprano/contacts/${id}`
                     const options = {
                         method: 'PUT',
                         body: raw,
@@ -105,19 +109,8 @@ const getStore = ({ getStore, getActions, setStore }) => {
                         }
                     }
                     const response = await fetch(apiUrl, options)
+                    console.log('editado',response.status)
                     const data = await response.json()
-                    console.log('Contacto actualizado', data)
-                    if (data.response >= 200 && data.response <= 299) {
-                        alert('Usuario actualizado')
-                        setStore({
-                            contact: {
-                                name: '',
-                                phone: '',
-                                email: '',
-                                address: ''
-                            }
-                        })
-                    }
                 } catch (error) {
                 }
                 getActions().getAgendaContacts()
@@ -161,12 +154,25 @@ const getStore = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
 
                 }
+            },
+
+            cleanContact(){
+                setStore({
+                    contact: {
+                        name: '',
+                        phone: '',
+                        address: '',
+                        email: ''
+                    }
+                })
             }
         }
     }
 }
 
 export default getStore
+
+
 
 
 
