@@ -17,6 +17,7 @@ const getStore = ({ getStore, getActions, setStore }) => {
                 address: '',
                 phone: '',
                 email: '',
+                id: ''
             },
 
             host: 'https://playground.4geeks.com',
@@ -27,6 +28,9 @@ const getStore = ({ getStore, getActions, setStore }) => {
         },
 
         actions: {
+            /* Las funciones handleClickAdd y handleClickUpdate setean las propiedades del store buttonAdd y buttonUpdate
+               a true cuando se presionan los botones editar o agregar contacto para ejecutar renderizado condicional en 
+               las funciones que realizan las peticiones POST O PUT dentro del componente formulario */
             handleClickAdd: ()=>{
                 setStore({ buttonAdd: true })
             },
@@ -42,27 +46,16 @@ const getStore = ({ getStore, getActions, setStore }) => {
                 })
             },
 
-            getInfoContact: (index) => {
+            getInfoContact: (index) => { 
                 /* Muestra la info de un solo contacto dentro un formulario para poder editarla.
-                   Está función es utilizada en el componente ContactCard de cada conatcto. De tal 
-                   manera, permite que cada contacto pueda ser actualizado. Esta Función se ejecuta al presionar 
+                   Está función es utilizada en el componente ContactCard de cada conatcto.Esta Función se ejecuta al presionar 
                    <boton de editar onClick={()=>getInfoContact(index)}>, pasando como argumento el index generado por
-                   el map de este componente. Se necesita el index para actualizar info, porque por el index se
-                   accede a un el elemento dentro de un array y la priedad del Store.contacts es un array */
-                const { contacts }= getStore();
-                let contact= contacts[index]/* esta variable no es la misma que se encuentra dentro del store */
+                   el map de este componente. */
+                const { contacts }= getStore(); 
+                let contact= contacts[index] /* esta variable no es la misma que se encuentra dentro del store */
                 setStore({ contact })
             },
-
-           /*  rederingUpdateContact: (e)=>{
-                const { contacts }= getStore();
-                setStore({...contacts,
-                    name: e.target.value,
-                    address: e.target.value,
-                    phone: e.target.value,
-                    email: e.target.value
-                })
-            }, */
+ 
 
             checkInputsComplets: async () => {
                 /* valida que los inputs estén con info. Se pasa
@@ -107,9 +100,11 @@ const getStore = ({ getStore, getActions, setStore }) => {
                 setStore({ contact: contact })
             },
 
-            updateContact: async () => {
+            updateContact: async (id) => {
+                /* Recibe por parametro en la URL el ID al momento de hacer click en el botón editar de cada usuario 
+                 poe medio del hook useParams declarado en la vista AddContact */
                 try {
-                    const { host, contact, contacts, contacts:[{id}]} = getStore();
+                    const { host, contact } = getStore();
                     const raw = JSON.stringify(contact)
                     const apiUrl = `${host}/contact/agendas/TheSoprano/contacts/${id}`
                     const options = {
@@ -122,13 +117,31 @@ const getStore = ({ getStore, getActions, setStore }) => {
                     const response = await fetch(apiUrl, options)
                     console.log('editado',response.status)
                     const data = await response.json()
-                    setStore({...contacts,
-                        name: data.name,
-                        phone: data.phone,
-                        email: data.email,
-                        address: data.adreess
-                    })
+                    console.log(data)
+                    if(data){
+                        alert('Actualizado')
+                    }
+                   
                 } catch (error) {
+                };
+            },
+
+            deleteContact: async ()=>{
+                try{
+                    const { host, contact }= getStore();
+                    console.log('contacto:', contact)
+                    const apiUrl= `${host}/contact/agendas/TheSoprano/contacts/${contact.id}`
+                    const options= {
+                        method: 'PUT',
+                        headers: {
+                            "Content-Type": "Application/json"
+                        }
+                    }
+                    const response= await fetch(apiUrl, options)
+                    console.log('Respuesta borrar:', response.status)
+
+                }catch(error){
+
                 }
             },
 
