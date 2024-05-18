@@ -11,6 +11,7 @@ const App = () => {
                     <Routes>
                         <Route path='/' element={<Contact />} />
                         <Route path='/addcontact' element={<AddContact />} />
+                        <Route path='/editcontact/contact/:id' element={<AddContact />} />
                     </Routes>
                 </BrowserRouter>
         </>

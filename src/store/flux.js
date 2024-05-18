@@ -47,11 +47,22 @@ const getStore = ({ getStore, getActions, setStore }) => {
                    Está función es utilizada en el componente ContactCard de cada conatcto. De tal 
                    manera, permite que cada contacto pueda ser actualizado. Esta Función se ejecuta al presionar 
                    <boton de editar onClick={()=>getInfoContact(index)}>, pasando como argumento el index generado por
-                   el map de este componente. Se necesita el index para actualizar info */
+                   el map de este componente. Se necesita el index para actualizar info, porque por el index se
+                   accede a un el elemento dentro de un array y la priedad del Store.contacts es un array */
                 const { contacts }= getStore();
                 let contact= contacts[index]/* esta variable no es la misma que se encuentra dentro del store */
                 setStore({ contact })
             },
+
+           /*  rederingUpdateContact: (e)=>{
+                const { contacts }= getStore();
+                setStore({...contacts,
+                    name: e.target.value,
+                    address: e.target.value,
+                    phone: e.target.value,
+                    email: e.target.value
+                })
+            }, */
 
             checkInputsComplets: async () => {
                 /* valida que los inputs estén con info. Se pasa
@@ -98,7 +109,7 @@ const getStore = ({ getStore, getActions, setStore }) => {
 
             updateContact: async () => {
                 try {
-                    const { host, contact, contacts:[{id}]} = getStore();
+                    const { host, contact, contacts, contacts:[{id}]} = getStore();
                     const raw = JSON.stringify(contact)
                     const apiUrl = `${host}/contact/agendas/TheSoprano/contacts/${id}`
                     const options = {
@@ -111,9 +122,14 @@ const getStore = ({ getStore, getActions, setStore }) => {
                     const response = await fetch(apiUrl, options)
                     console.log('editado',response.status)
                     const data = await response.json()
+                    setStore({...contacts,
+                        name: data.name,
+                        phone: data.phone,
+                        email: data.email,
+                        address: data.adreess
+                    })
                 } catch (error) {
                 }
-                getActions().getAgendaContacts()
             },
 
             createAgenda: async (name) => {

@@ -17,6 +17,7 @@ const ContactCard = () => {
             { /* Renderizo condicionalmente mostrar los contactos si la lista  tiene agragados,
                  sino, indico un mensaje de lista vacía*/
                 store.contacts.length > 0 ?
+                /* Como la propiedad  */
                     store.contacts.map((contact, index) => {
                         return (
                             <div key={contact.id} className="card mb-3">
@@ -33,7 +34,7 @@ const ContactCard = () => {
                                         </div>
                                     </div>
                                     <div className="container d-inline col-md-1">
-                                        <Link onClick={()=>{actions.handleClickUpdate(); actions.getInfoContact(index)}} to={'/addcontact'} type="button" className="btn btn-light">
+                                        <Link onClick={()=>{actions.handleClickUpdate(); actions.getInfoContact(index)}} to={`/editcontact/contact/${contact.id}`} type="button" className="btn btn-light">
                                             <MdEdit />
                                         </Link>
                                         <button type="button" className="btn btn-light">
