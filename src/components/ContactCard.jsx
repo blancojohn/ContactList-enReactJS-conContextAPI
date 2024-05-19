@@ -30,15 +30,18 @@ const ContactCard = () => {
                                         </div>
                                     </div>
                                     <div className="container d-inline col-md-1">
-                                        <Link onClick={()=>{
-                                            actions.handleClickUpdate(); 
-                                            actions.getInfoContact(index)}} 
+                                        <Link onClick={() => {
+                                            actions.handleClickUpdate();
+                                            actions.selectContact(index)
+                                        }}
                                             to={`/editcontact/contact/${contact.id}`} type="button" className="btn btn-light">
                                             <MdEdit />
                                         </Link>
-                                        <button onClick={()=>{
-                                            actions.getInfoContact(index); 
-                                            actions.deleteContact()}}
+                                        <button onClick={() => {
+                                            /* actions.handleClickDelete(); */ 
+                                            actions.selectContact(index);
+                                            actions.deleteContact() 
+                                        }}
                                             type="button" className="btn btn-light">
                                             <IoTrash />
                                         </button>
@@ -55,4 +58,33 @@ const ContactCard = () => {
 }
 
 export default ContactCard
-                                                   
+
+/* PROXIMAMENTE AGREGAR VENTANA MODAL PARA CONFIRMAR SI DESEA ELIMINAR UN CONTACTO */
+/* const Modal = () => {
+    const { store, actions } = useContext(Context)
+
+    return (
+        <>
+
+            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            ...
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+ */
+

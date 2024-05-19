@@ -8,7 +8,7 @@ const Contact = () => {
     const { actions }= useContext(Context)
     useEffect(()=>{
         actions.cleanContact(); /* después de que se cargue el componente limpia el formulario que agrega un contacto */
-        actions.getAgendaContacts()/* cada vez que cargue el componente */
+        actions.getContacts()/* cada vez que cargue el componente */
     }, [])
     return(
         <>

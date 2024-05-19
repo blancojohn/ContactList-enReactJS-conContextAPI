@@ -24,7 +24,9 @@ const getStore = ({ getStore, getActions, setStore }) => {
 
             buttonAdd: false,
 
-            buttonUpdate: false
+            buttonUpdate: false,
+
+            /* buttonDelete: false */
         },
 
         actions: {
@@ -39,6 +41,10 @@ const getStore = ({ getStore, getActions, setStore }) => {
                 setStore({ buttonUpdate: true })
             },
 
+            /* handleClickDelete: ()=>{
+                setStore({buttonDelete: true})
+            }, */
+
             handleClickBack: ()=>{
                 setStore({
                     buttonAdd: false,
@@ -46,10 +52,10 @@ const getStore = ({ getStore, getActions, setStore }) => {
                 })
             },
 
-            getInfoContact: (index) => { 
-                /* Muestra la info de un solo contacto dentro un formulario para poder editarla.
+            selectContact: (index) => { 
+                /* Selecciona un único contacto para luego actualizar o borrar un contacto. 
                    Está función es utilizada en el componente ContactCard de cada conatcto.Esta Función se ejecuta al presionar 
-                   <boton de editar onClick={()=>getInfoContact(index)}>, pasando como argumento el index generado por
+                   <boton de editar onClick={()=>selectContact(index)}>, pasando como argumento el index generado por
                    el map de este componente. */
                 const { contacts }= getStore(); 
                 let contact= contacts[index] /* esta variable no es la misma que se encuentra dentro del store */
@@ -88,7 +94,7 @@ const getStore = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
 
                 }
-                getActions().getAgendaContacts()
+                getActions().getContacts()
 
             },
 
@@ -132,17 +138,19 @@ const getStore = ({ getStore, getActions, setStore }) => {
                     console.log('contacto:', contact)
                     const apiUrl= `${host}/contact/agendas/TheSoprano/contacts/${contact.id}`
                     const options= {
-                        method: 'PUT',
+                        method: 'DELETE',
                         headers: {
                             "Content-Type": "Application/json"
                         }
                     }
                     const response= await fetch(apiUrl, options)
                     console.log('Respuesta borrar:', response.status)
-
+                    const data= await response.json()
                 }catch(error){
 
                 }
+                getActions().getContacts() 
+
             },
 
             createAgenda: async (name) => {
@@ -171,7 +179,7 @@ const getStore = ({ getStore, getActions, setStore }) => {
                 }
             },
 
-            getAgendaContacts: async () => {
+            getContacts: async () => {
                 try {
                     const { host } = getStore();
                     const apiUrl = `${host}/contact/agendas/TheSoprano`
@@ -200,6 +208,7 @@ const getStore = ({ getStore, getActions, setStore }) => {
 }
 
 export default getStore
+
 
 
 
